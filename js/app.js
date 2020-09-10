@@ -19,16 +19,16 @@
  */
 const section = document.querySelectorAll("section"),
   navBarList = document.getElementById("navbar__list"),
-  menuItems = [
-    { link: "#home", label: "Home" },
-    { link: "#section1", label: "Section 1" },
-    { link: "#section2", label: "Section 2" },
-    { link: "#section3", label: "Section 3" },
-  ];
+  sectionsData = Array.from(document.getElementsByTagName("section")),
+  menuItems = sectionsData.map((el) => ({
+    link: `#${el.id}`,
+    label: el.dataset.nav,
+  }));
+
 let sections = {},
   i = 0;
 
-Array.prototype.forEach.call(section, function (e) {
+Array.from(section).forEach((e) => {
   sections[e.id] = e.offsetTop;
 });
 /**
@@ -53,7 +53,6 @@ menuItems.forEach((element, i) => {
     a.classList.add("active");
   }
   a.addEventListener("click", () => {
-    console.log("call");
     window.scrollTo({
       left: 0,
       top: sections[element.link],
@@ -85,7 +84,7 @@ window.onscroll = function () {
 
   for (i in sections) {
     if (sections[i] <= scrollPosition) {
-      document.querySelector(".active").setAttribute("class", " ");
+      document.querySelector(".active").setAttribute("class", "");
       document
         .querySelector("a[href*=" + i + "]")
         .setAttribute("class", "active");
